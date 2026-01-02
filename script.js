@@ -1,3 +1,37 @@
+// ---------------- QUESTIONS DATA (REQUIRED) ----------------
+const questions = [
+  {
+    question: "What is 2 + 2?",
+    choices: ["4", "3", "5", "6"],
+    answer: "4",
+  },
+  {
+    question: "Capital of India?",
+    choices: ["Delhi", "Mumbai", "Kolkata", "Chennai"],
+    answer: "Delhi",
+  },
+  {
+    question: "Which is a programming language?",
+    choices: ["Python", "Snake", "Lion", "Tiger"],
+    answer: "Python",
+  },
+  {
+    question: "Which planet is known as Red Planet?",
+    choices: ["Earth", "Mars", "Venus", "Jupiter"],
+    answer: "Mars",
+  },
+  {
+    question: "HTML stands for?",
+    choices: [
+      "Hyper Text Markup Language",
+      "High Text Machine Language",
+      "Hyper Tool Multi Language",
+      "None",
+    ],
+    answer: "Hyper Text Markup Language",
+  },
+];
+
 // ---------------- DOM REFERENCES ----------------
 const questionsElement = document.getElementById("questions");
 const submitBtn = document.getElementById("submit");
@@ -61,9 +95,7 @@ submitBtn.addEventListener("click", function () {
     }
   }
 
-  const text = `Your score is ${score} out of 5.`;
-  scoreDiv.textContent = text;
-
+  scoreDiv.textContent = `Your score is ${score} out of 5.`;
   localStorage.setItem("score", score);
 });
 

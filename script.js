@@ -1,39 +1,39 @@
-// DOM references
+// ---------------- DOM REFERENCES ----------------
 const questionsElement = document.getElementById("questions");
 const submitBtn = document.getElementById("submit");
 const scoreDiv = document.getElementById("score");
 
-// ---------- Load saved progress ----------
-let userAnswers = JSON.parse(sessionStorage.getItem("progress")) || {};
+// ---------------- SESSION STORAGE INIT ----------------
+if (!sessionStorage.getItem("progress")) {
+  sessionStorage.setItem("progress", JSON.stringify({}));
+}
 
-// ---------- Render Questions ----------
+let userAnswers = JSON.parse(sessionStorage.getItem("progress"));
+
+// ---------------- RENDER QUESTIONS ----------------
 function renderQuestions() {
   questionsElement.innerHTML = "";
 
   for (let i = 0; i < questions.length; i++) {
-    const question = questions[i];
-    const questionElement = document.createElement("div");
+    const q = questions[i];
+    const wrapper = document.createElement("div");
 
-    // Question text
-    const questionText = document.createElement("p");
-    questionText.textContent = question.question;
-    questionElement.appendChild(questionText);
+    const p = document.createElement("p");
+    p.textContent = q.question;
+    wrapper.appendChild(p);
 
-    // Choices
-    for (let j = 0; j < question.choices.length; j++) {
-      const choice = question.choices[j];
+    for (let j = 0; j < q.choices.length; j++) {
+      const choice = q.choices[j];
 
       const radio = document.createElement("input");
       radio.type = "radio";
       radio.name = `question-${i}`;
       radio.value = choice;
 
-      // Restore checked answer
       if (userAnswers[i] === choice) {
         radio.checked = true;
       }
 
-      // Save progress on change
       radio.addEventListener("change", function () {
         userAnswers[i] = choice;
         sessionStorage.setItem("progress", JSON.stringify(userAnswers));
@@ -43,15 +43,15 @@ function renderQuestions() {
       label.appendChild(radio);
       label.appendChild(document.createTextNode(choice));
 
-      questionElement.appendChild(label);
-      questionElement.appendChild(document.createElement("br"));
+      wrapper.appendChild(label);
+      wrapper.appendChild(document.createElement("br"));
     }
 
-    questionsElement.appendChild(questionElement);
+    questionsElement.appendChild(wrapper);
   }
 }
 
-// ---------- Submit Quiz ----------
+// ---------------- SUBMIT QUIZ ----------------
 submitBtn.addEventListener("click", function () {
   let score = 0;
 
@@ -61,17 +61,17 @@ submitBtn.addEventListener("click", function () {
     }
   }
 
-  scoreDiv.textContent = `Your score is ${score} out of ${questions.length}.`;
+  const text = `Your score is ${score} out of 5.`;
+  scoreDiv.textContent = text;
 
-  // Save score in localStorage
   localStorage.setItem("score", score);
 });
 
-// ---------- Load previous score ----------
+// ---------------- LOAD PREVIOUS SCORE ----------------
 const savedScore = localStorage.getItem("score");
 if (savedScore !== null) {
-  scoreDiv.textContent = `Your score is ${savedScore} out of ${questions.length}.`;
+  scoreDiv.textContent = `Your score is ${savedScore} out of 5.`;
 }
 
-// Initial render
+// ---------------- INITIAL RENDER ----------------
 renderQuestions();
